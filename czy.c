@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int in_set(char value){
+int in_set(unsigned char value){
   if( (value <= 15 && value >= 9) ||
       (value == 32) ||
       (
@@ -24,7 +24,7 @@ int in_set(char value){
  * even if it is not at 8 bits yet.
  * Index is the index of the next available bit for storage
  */ 
-void output( char print, int bits, char *store, int *index, int should_pad){
+void output( unsigned char print, int bits, unsigned char *store, int *index, int should_pad){
   /*printf(" | "); */
   /*printf("idx:%d ", *index);*/
   /*if( bits == 6){*/
@@ -34,13 +34,16 @@ void output( char print, int bits, char *store, int *index, int should_pad){
     /*printf("ascii %d, ", print);*/
   /*}*/
 
+  /*printf(" | s:%x, ", *store);*/
+  /*printf("%x, ", print);*/
   int available = 8-(*index);
   if( available <= bits ){ /* reaches the end or overflows */
     int overflow = bits - available;
-    char result = print >> overflow; /* bitshift to put only bits that fill fit at end */ 
+    unsigned char result = print >> overflow; /* bitshift to put only bits that fill fit at end */ 
     *store = *store | result; /* or it into store */
     /*printf("w:%x ", * store);*/
-    write(1, store, 1); /* print it, since we're full now */
+    write(1, store, 1); //[> print it, since we're full now <]
+    /*printf("bw:%x, ", *store);*/
 
     *store = 0; /* reset store */
     *index = 0;
@@ -60,7 +63,8 @@ void output( char print, int bits, char *store, int *index, int should_pad){
   if( should_pad ){ /* pad the results and print, even if we're not full */
     if( index != 0){ /* there's at least SOMETHING to print */
       /*printf("w2:%x ", * store);*/
-      write(1,store,1); /* store is already padded. print it */
+      write(1,store,1); //[> store is already padded. print it <]
+      /*printf("bwf:%x, ", store);*/
       /* and reset */
       *index = 0;
       *store = 0;
@@ -74,12 +78,13 @@ int main( int argc, char *argv[]){
   int read_size = 1; /* Used to loop until end of stream */
 
   /* Used by output function to track remaining bits */
-  char store; 
+  unsigned char store = 0; 
   int store_idx = 0;
 
   while(read_size > 0){ /* Read until end of stream */
-    char buf;
+    unsigned char buf;
     read_size = read(0, &buf, 1);
+    /*printf("hex: %x, ", buf);*/
     if ( read_size == 0){
       break;
     }
@@ -108,7 +113,7 @@ int main( int argc, char *argv[]){
       }
 
       /* Output characters */
-      char code;
+      unsigned char code;
       if( (buf <= 93 && buf >= 40) && buf != 64){
         code = buf - 32;
       }
