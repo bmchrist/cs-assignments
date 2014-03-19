@@ -1,0 +1,18 @@
+Usage:
+Both utilities, czy and dzy take input from stdin, and output to stdout.
+
+czy is used to compress and dzy is used to decompress.
+
+Example usage:
+echo "test message" | czy > output.txt
+dzy < output.txt > decompressed.txt
+
+Compressing the source of czy:
+Original size: 4419 bytes.
+Czy compressed size: 3547 bytes. Ratio:  .8027 (80.27%)
+Gzip compressed size: 1524 bytes. Ratio: .3449 (34.49%)
+
+Compressing the compiled czy binary:
+Original size: 8616 bytes.
+Czy compressed size: 13460 bytes. Ratio: 1.5622 (156.22%)
+Gzip compressed size: 1489 bytes. Ratio: .3369 (33.69%) 
