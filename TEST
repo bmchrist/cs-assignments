@@ -1,0 +1,17 @@
+TESTS
+./czy < czy.c | ./dzy > czy-new.c
+diff czy.c czy-new.c
+./czy < dzy.c | ./dzy > dzy-new.c
+diff dzy.c dzy-new.c
+
+echo "a\taB__  \0cC$" | ./czy | ./dzy
+
+dd if=/dev/urandom of=infile bs=1024 count=1
+./czy < infile | ./dzy > outfile
+diff infile outfile
+
+./czy < infile > compressed
+./dzy < compressed > decompressed
+./czy < decompressed > recompressed
+diff infile decompressed
+diff compressed recompressed
