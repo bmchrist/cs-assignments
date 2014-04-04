@@ -1,0 +1,76 @@
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+      *(((char*) buf)+i-1) = 0 ;
+      blocksize = blocksize + 4-blocksize%4;
+      break; /* Then we're done */
+      checksum = checksum ^ buf[i];
+      printf("breaking\n");
+      write(2, "Blocksize must be a multiple of 4. Rounding up.\n", 47 );
+      write(2, "There was an error writing to the file\n", 39); 
+    /* Calculate checksum so far */
+    /* If we had 4 bytes last time, and that was the end of the file... */
+    /* Write blocksize bytes to the outfile */
+    /* Zero fill if we read less than blocksize bytes */
+    blocksize = 65536;
+    blocksize = atoi(argv[3]);
+    for( i=blocksize; i>rnum; i--){
+    for(i=0; i<blocksize/4; i++){
+    if ( blocksize%4 != 0){ /* Not a multiple of four */
+    if( rnum <= 0 ){ 
+    if( wnum != blocksize){
+    return 1;
+    rnum = read(readfd, (char *)buf, blocksize);
+    wnum = write(writefd, buf, blocksize);
+    write(2, "Incorrect number of arguments\n", 30);
+    write(2,"Could not open input file\n",26);
+    write(2,"Could not open output file\n",27);
+    }
+    }
+    }
+    }
+    }
+  /* Open the input file */
+  /* Set the blocksize */
+  /* Sprintf + write TODO */
+  char strbuf[19];
+  do{
+  else{
+  i = sprintf(strbuf, "Checksum %x\n", checksum);
+  if( argc < 3){
+  if( argc == 3 ) { /* Blocksize not specified */
+  if( readfd <= 0 ){
+  if( writefd <= 0){
+  int blocksize;
+  int i;
+  int readfd = open(argv[1], O_RDONLY);
+  int writefd = open(argv[2], O_WRONLY | O_CREAT, 0600);
+  ssize_t rnum, wnum; /* Number of bytes read */
+  unsigned int buf[blocksize/4]; /* Store blocksize bytes */ 
+  unsigned int checksum = 0; /* Stores an xor of each consecutive 4 bytes */
+  write(1,strbuf,i);
+  }
+  }
+  }
+  }
+  }
+  }while( rnum == blocksize); /* Continue until we reach the end of the file */
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+int main( int argc, char *argv[])
+{
+}

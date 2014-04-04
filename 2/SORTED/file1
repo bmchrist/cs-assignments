@@ -1,0 +1,29 @@
+
+
+
+
+    closedir(pDir);
+    execve("sort", passed_args, passed_env);
+    int status = mkdir("SORTED", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    return 1;
+    write(2, "Not enough arguments\n", 21);
+  /* Create the SORTED directory if it does not exist */
+  DIR *pDir = opendir("SORTED");
+  char *passed_args[] = {"-o", "testout", "file1"};
+  char *passed_env[] = {NULL};
+  else{
+  for(i=1; i<argc; i++){
+  if ( pDir == NULL){ /* Could not open director */
+  if (argc < 2) {
+  int i;
+  }
+  }
+  }
+  }
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main ( int argc, char *argv[])
+{
+}
