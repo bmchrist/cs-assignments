@@ -1,5 +1,6 @@
-#include <stdlib.h>
 #include "tree.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 Node *createNode(int value, Node *parent){
   Node *node;

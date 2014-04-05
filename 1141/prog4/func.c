@@ -58,6 +58,7 @@ Node *search(int value, Node *node){
 Node *removeNode(int value, Node *root){
   Node *node = search(value, root);
   if (!node){ /* nothing to remove */
+    printf("not deleting anything");
     return root;
   }
   else{
@@ -81,15 +82,16 @@ Node *removeNode(int value, Node *root){
         while(new->right){
           new=new->right;
         }
-        new->left = node->left;
-        new->right = node->right;
-        new->right->parent = new;
-        new->left->parent = new;
         /* Uproot it from its current location */
         if(new->parent){
           new->parent->right = NULL;
         }
       }
+      new->left = node->left;
+      new->right = node->right;
+      new->right->parent = new;
+      new->left->parent = new;
+      printf("got a problem? %d\n", new->value);
     }
     if(root == node){ /* we deleted the root */
       deleteNode(node);
@@ -129,6 +131,7 @@ void iot(Node *root){
   }
   else{
     iot(root->left);
+    printf("%d ", root->value);
     iot(root->right);
   }
 }
@@ -137,6 +140,7 @@ void preot(Node *root){
     return;
   }
   else{
+    printf("%d ", root->value);
     preot(root->left);
     preot(root->right);
   }
@@ -148,5 +152,6 @@ void postot(Node *root){
   else{
     postot(root->left);
     postot(root->right);
+    printf("%d ", root->value);
   }
 }
