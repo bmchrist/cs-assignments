@@ -58,7 +58,6 @@ Node *search(int value, Node *node){
 Node *removeNode(int value, Node *root){
   Node *node = search(value, root);
   if (!node){ /* nothing to remove */
-    printf("not deleting anything");
     return root;
   }
   else{
@@ -86,12 +85,11 @@ Node *removeNode(int value, Node *root){
         if(new->parent){
           new->parent->right = NULL;
         }
+        new->left = node->left;
+        new->left->parent = new;
       }
-      new->left = node->left;
       new->right = node->right;
       new->right->parent = new;
-      new->left->parent = new;
-      printf("got a problem? %d\n", new->value);
     }
     if(root == node){ /* we deleted the root */
       deleteNode(node);
