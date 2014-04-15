@@ -85,7 +85,7 @@ void do_child(int sock){
       readRequest(sock, &fd, sizeof(int));
       readRequest(sock, &len, sizeof(int));
       char *data = malloc(len);
-      int result = readRequest(fd, data, len);
+      int result = read(fd, data, len);
       sendResponse(sock, result, errno, result, data);
       free(data);
     }

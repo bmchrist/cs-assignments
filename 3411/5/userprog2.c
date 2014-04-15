@@ -32,7 +32,7 @@ int entry(int argc, char *argv[])
    out_fd = open(argv[1], O_CREAT|O_RDWR, permission);  /* Open local file. */
    printf("USERPROG2: local open returned fd:%d, errno:%d\n", out_fd, errno);
 
-   in_flags = 514;  /* It should be something other than 0. */
+   in_flags = O_RDONLY;  /* It should be something other than 0. */
    in_fd = Open(argv[2], in_flags, 0777); /* Open remote file. */
    printf("USERPROG2: Open() returned %d, errno:%d\n", in_fd, errno);
 
