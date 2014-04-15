@@ -1,0 +1,16 @@
+To my knowledge everything works. There may be odd behavior in case of certain
+system call failures. If Open fails and the user still tries to call Read there 
+may be issues.
+The system should properly handle not getting enough data from the socket (such
+as attempting to read 4 bytes and only getting 2) because it will attempt to 
+read again until it reads enough data. I am not positive that this works as I 
+have had consistent network connections during all of my testing.
+
+The server correctly creates a socket and listesn
+The client correctly connects to the server given the appropriate host and port
+Each of the RPCs described in the homework spec correctly receive input
+Each of the RPCs described in the homework spec correctly returns results
+Copying a file (by reading and then Writing) works correctly
+This program should be interoperable.
+
+

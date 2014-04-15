@@ -13,6 +13,7 @@
 #define write_call 4
 #define seek_call 5
 
+/* This function reads in count bytes, and will not return until it has read count bytes*/
 int readRequest(int fd, void *buf, size_t count){
   int num_read=0;
   while(num_read < count){
@@ -26,29 +27,33 @@ int readRequest(int fd, void *buf, size_t count){
   }
   return count;
 }
+/* This function takes the parameters to a socket response and writes the message to the socket */
 void sendResponse(int sock, int result, int err, int d_length, char *data){
     /*Response: <result int> <errno int> <l-data 2 bytes > <string of l-data bytes>*/
+    /* Create the message */
     char *msg = malloc(sizeof(int)*2 + 2 + d_length);
     int idx=0;
     bcopy(&result,&msg[idx],sizeof(int)); idx+=sizeof(int);
     bcopy(&err,&msg[idx],sizeof(int)); idx+=sizeof(int);
     msg[idx++] = d_length >> 8 & 0xff;
     msg[idx++] = d_length & 0xff;
-
     bcopy(data,&msg[idx],d_length); idx+=d_length;
+
+    /* Write it to the socket */
     write(sock, msg, idx);
-    write(1,msg, idx);
     free(msg);
     return;
 }
 
+/* Each connection spawns a child that executes this logic
+ * This function will read requests from the socket, take action and responsd */
 void do_child(int sock){
   char opcode;
 
   while(1){
     int size = readRequest(sock, &opcode, 1);
     errno = 0;
-    if( size == 0){
+    if( size == 0){ /* if the socket was closed, we're done */
       return;
     }
     if (opcode == open_call){
@@ -129,7 +134,8 @@ int main(int argc, char *argv[]){
 
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if(sockfd < 0){
-    // TODO error
+    write(2, "error with socket\n",18);
+    return 1;
   }
   bzero((char *) &serv_addr, sizeof(serv_addr));
   serv_addr.sin_family = AF_INET;
@@ -138,9 +144,8 @@ int main(int argc, char *argv[]){
 
   int temp = bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
   if (temp < 0){
-    printf("something bad\n");
+    write(2, "error with bind\n",16);
     return 1;
-    // TODO error
   }
   socklen_t server_len = sizeof(serv_addr);
   getsockname(sockfd, (struct sockaddr *)&serv_addr, &server_len);
@@ -151,19 +156,17 @@ int main(int argc, char *argv[]){
   while(1){
     conn = accept(sockfd, (struct sockaddr *) &cli_addr, &cli_len); 
     if( conn < 0){
-      printf("darn\n");
-      /* TODO error */
+      write(2, "error with accept\n",17);
+      return 1;
     }
     pid_t pid = fork();
     if(pid < 0){
-      printf("eff\n");
+      write(2, "error with fork\n",15);
       return 1;
-      /* TODO error */
     }
     if( pid == 0){
       close(sockfd);
       do_child(conn);
-      /* LOGIC */
       return 0;
     }
     else{

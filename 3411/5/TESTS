@@ -1,0 +1,11 @@
+Userprogram1 has a local output file and a remote input file
+It directs the server to open the remote file, read input from it, and then gets
+the input from the server. It writes this input to the local output file.
+
+I tested this program with a variety of remote input contents. A blank input file
+works, an previously existing output file works, a nonexistant output file works.
+An input file with multiple lines works.
+
+Userprogram2 has a remote output file and a local input file.
+I tested this program in the same way as above, except the output file is remote
+in this case, and input is local.

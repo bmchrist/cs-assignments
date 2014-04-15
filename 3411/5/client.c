@@ -26,7 +26,7 @@ int readResponse(char *buf){
 
 int main(int argc, char *argv[]){
   if( argc < 3 ){
-    printf("Not enough arguments\n");
+    write(1, "Not enough arguments\n",21);
     return 1;
   }
   int port = atoi(argv[2]);
@@ -35,14 +35,12 @@ int main(int argc, char *argv[]){
 
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
   if(sockfd < 0){
-    printf("bad sock\n");
-    // TODO error
+    write(1,"bad sock\n",9);
     return 1;
   }
   server = gethostbyname(argv[1]);
   if (server == NULL) {
-    printf("bad server\n");
-    // TODO error
+    write(1,"bad server\n",11);
     return 1;
   }
   bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -50,11 +48,11 @@ int main(int argc, char *argv[]){
   bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
   serv_addr.sin_port = htons(port);
   if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-    printf("error?\n");
-    // TODO error
+    write(1,"error connecting\n",17);
     return 1;
   }
 
+  /* Call the linked user program */
   return entry(argc-2, argv+2);
 }
 int Open(const char *pathname, int flags, mode_t mode){
